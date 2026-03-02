@@ -1,0 +1,54 @@
+name: Package WordPress Theme
+
+on:
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - 'v*'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    env:
+      THEME_SLUG: zkm-custom
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build theme zip
+        id: package
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          VERSION="$(grep -m1 '^Version:' style.css | sed 's/^Version:[[:space:]]*//')"
+          if [[ -z "${VERSION}" ]]; then
+            VERSION="0.0.0"
+          fi
+
+          mkdir -p dist/${THEME_SLUG}
+
+          rsync -a ./ dist/${THEME_SLUG}/ \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'dist' \
+            --exclude '.env' \
+            --exclude '.env.example' \
+            --exclude 'docker-compose.yml'
+
+          ZIP_NAME="${THEME_SLUG}-${VERSION}-${GITHUB_RUN_NUMBER}.zip"
+          (cd dist && zip -r "${ZIP_NAME}" "${THEME_SLUG}")
+
+          echo "zip_path=dist/${ZIP_NAME}" >> "$GITHUB_OUTPUT"
+          echo "zip_name=${ZIP_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload packaged theme artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.package.outputs.zip_name }}
+          path: ${{ steps.package.outputs.zip_path }}
+          if-no-files-found: error
+          retention-days: 14
