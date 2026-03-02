@@ -2,7 +2,7 @@
 /**
  * Header template.
  *
- * @package zkm-custom
+ * @package zkm-wp-theme
  */
 
 ?><!doctype html>
@@ -34,7 +34,7 @@
             <?php endif; ?>
         </div>
 
-        <nav class="main-navigation" aria-label="<?php esc_attr_e( 'Primary menu', 'zkm-custom' ); ?>">
+        <nav class="main-navigation" aria-label="<?php esc_attr_e( 'Primary menu', 'zkm-wp-theme' ); ?>">
             <?php
             wp_nav_menu(
                 array(

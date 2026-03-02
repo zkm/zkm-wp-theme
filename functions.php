@@ -2,7 +2,7 @@
 /**
  * ZKM Custom theme functions.
  *
- * @package zkm-custom
+ * @package zkm-wp-theme
  */
 
 if ( ! function_exists( 'zkm_custom_setup' ) ) {
@@ -19,9 +19,9 @@ if ( ! function_exists( 'zkm_custom_setup' ) ) {
 
         register_nav_menus(
             array(
-                'primary' => __( 'Primary Menu', 'zkm-custom' ),
-                'footer'  => __( 'Footer Menu', 'zkm-custom' ),
-                'social'  => __( 'Social Menu', 'zkm-custom' ),
+                'primary' => __( 'Primary Menu', 'zkm-wp-theme' ),
+                'footer'  => __( 'Footer Menu', 'zkm-wp-theme' ),
+                'social'  => __( 'Social Menu', 'zkm-wp-theme' ),
             )
         );
     }
@@ -35,21 +35,21 @@ add_action( 'after_setup_theme', 'zkm_custom_setup' );
  */
 function zkm_custom_enqueue_assets() {
     wp_enqueue_style(
-        'zkm-custom-fonts',
+        'zkm-wp-theme-fonts',
         'https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap',
         array(),
         null
     );
 
     wp_enqueue_style(
-        'zkm-custom-style',
+        'zkm-wp-theme-style',
         get_stylesheet_uri(),
-        array( 'zkm-custom-fonts' ),
+        array( 'zkm-wp-theme-fonts' ),
         wp_get_theme()->get( 'Version' )
     );
 
     wp_enqueue_script(
-        'zkm-custom-interactions',
+        'zkm-wp-theme-interactions',
         get_template_directory_uri() . '/assets/js/theme.js',
         array(),
         wp_get_theme()->get( 'Version' ),

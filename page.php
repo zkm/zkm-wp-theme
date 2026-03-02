@@ -2,7 +2,7 @@
 /**
  * Page template.
  *
- * @package zkm-custom
+ * @package zkm-wp-theme
  */
 
 require get_template_directory() . '/index.php';

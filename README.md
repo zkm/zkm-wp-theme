@@ -33,7 +33,7 @@ This is a standalone WordPress theme with no parent theme dependency.
 	http://localhost:8080
 	```
 
-The current repository is mounted into the container as theme folder `zkm-custom`.
+The current repository is mounted into the container as theme folder `zkm-wp-theme`.
 
 To stop:
 
@@ -52,7 +52,7 @@ A workflow at `.github/workflows/release-theme.yml` builds a release zip and att
 
 ### Automatic release
 - Push a tag like `v1.0.2`.
-- The workflow packages the theme into `zkm-custom-<version>.zip` and publishes the release.
+- The workflow packages the theme into `zkm-wp-theme-<version>.zip` and publishes the release.
 
 ### Manual release
 - Run the workflow from GitHub Actions with `tag_name` input (example: `v1.0.2`).
@@ -61,7 +61,7 @@ A workflow at `.github/workflows/release-theme.yml` builds a release zip and att
 A second workflow at `.github/workflows/package-theme.yml` packages the theme on every push and pull request (excluding release tags).
 
 - Open GitHub Actions for the run.
-- Download the artifact named like `zkm-custom-<version>-<run>.zip` from the run summary.
+- Download the artifact named like `zkm-wp-theme-<version>-<run>.zip` from the run summary.
 
 ## Notes
 - Styling is in `style.css`.

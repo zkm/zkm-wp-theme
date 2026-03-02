@@ -2,7 +2,7 @@
 /**
  * Footer template.
  *
- * @package zkm-custom
+ * @package zkm-wp-theme
  */
 
 ?>
@@ -14,7 +14,7 @@
                 <p><?php bloginfo( 'description' ); ?></p>
             </div>
 
-            <nav class="footer-navigation" aria-label="<?php esc_attr_e( 'Footer menu', 'zkm-custom' ); ?>">
+            <nav class="footer-navigation" aria-label="<?php esc_attr_e( 'Footer menu', 'zkm-wp-theme' ); ?>">
                 <?php
                 wp_nav_menu(
                     array(
@@ -28,7 +28,7 @@
             </nav>
         </div>
 
-        <nav class="social-navigation" aria-label="<?php esc_attr_e( 'Social menu', 'zkm-custom' ); ?>">
+        <nav class="social-navigation" aria-label="<?php esc_attr_e( 'Social menu', 'zkm-wp-theme' ); ?>">
             <?php
             wp_nav_menu(
                 array(
@@ -43,12 +43,12 @@
 
         <div class="site-info">
             <span><?php echo esc_html( gmdate( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?></span>
-            <span><?php esc_html_e( 'Built on WordPress', 'zkm-custom' ); ?></span>
+            <span><?php esc_html_e( 'Built on WordPress', 'zkm-wp-theme' ); ?></span>
         </div>
     </footer>
 </div>
 
-<button id="zkm-back-to-top" class="back-to-top" type="button" aria-label="<?php esc_attr_e( 'Back to top', 'zkm-custom' ); ?>">
+<button id="zkm-back-to-top" class="back-to-top" type="button" aria-label="<?php esc_attr_e( 'Back to top', 'zkm-wp-theme' ); ?>">
     ↑
 </button>
 
