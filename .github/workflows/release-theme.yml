@@ -28,15 +28,12 @@ jobs:
         run: |
           set -euo pipefail
 
-          VERSION="$(grep -m1 '^Version:' style.css | sed 's/^Version:[[:space:]]*//')"
-          if [[ -z "${VERSION}" ]]; then
-            VERSION="${GITHUB_REF_NAME}"
-          fi
-
           RELEASE_TAG="${GITHUB_REF_NAME}"
           if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
             RELEASE_TAG="${{ inputs.tag_name }}"
           fi
+
+          VERSION="${RELEASE_TAG#v}"
 
           mkdir -p dist/${THEME_SLUG}
 
@@ -60,4 +57,5 @@ jobs:
           tag_name: ${{ steps.package.outputs.release_tag }}
           name: ${{ steps.package.outputs.release_tag }}
           generate_release_notes: true
+          overwrite_files: true
           files: ${{ steps.package.outputs.asset_path }}
