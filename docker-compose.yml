@@ -31,6 +31,7 @@ services:
     volumes:
       - wp_data:/var/www/html
       - ./:/var/www/html/wp-content/themes/zkm-wp-theme
+      - ./docker/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
 
 volumes:
   db_data:

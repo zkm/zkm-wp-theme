@@ -1,4 +1,4 @@
-# ZKM Custom Theme
+# ZKM WP Theme
 
 [![Package WordPress Theme](https://github.com/zkm/zkm-wp-theme/actions/workflows/package-theme.yml/badge.svg)](https://github.com/zkm/zkm-wp-theme/actions/workflows/package-theme.yml)
 [![Release WordPress Theme](https://github.com/zkm/zkm-wp-theme/actions/workflows/release-theme.yml/badge.svg)](https://github.com/zkm/zkm-wp-theme/actions/workflows/release-theme.yml)
@@ -32,6 +32,18 @@ This is a standalone WordPress theme with no parent theme dependency.
 	```text
 	http://localhost:8080
 	```
+
+### Local upload limit (2GB)
+The Docker setup includes a PHP override at `docker/php/uploads.ini` that sets:
+- `upload_max_filesize = 2048M`
+- `post_max_size = 2048M`
+
+If containers are already running, restart to apply:
+
+```bash
+docker compose down
+docker compose up -d
+```
 
 The current repository is mounted into the container as theme folder `zkm-wp-theme`.
 

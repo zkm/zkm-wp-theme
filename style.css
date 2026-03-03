@@ -4,7 +4,7 @@ Theme URI: https://www.zachschneider.com/
 Author: Zach Schneider
 Author URI: https://www.zkm.tw/
 Description: A fully standalone custom theme with polished navigation and dark styling.
-Version: 1.0.3
+Version: 1.0.4
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
@@ -774,6 +774,7 @@ body.admin-bar.zkm-has-hero-layout .site-header-wrap {
   justify-content: center;
   width: 1.5rem;
   height: 1.5rem;
+  color: var(--zkm-bg);
 }
 
 .social-navigation .menu-item > a .zkm-social-icon svg {
@@ -792,6 +793,13 @@ body.admin-bar.zkm-has-hero-layout .site-header-wrap {
 
 .social-navigation .menu {
   gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.social-navigation {
+  display: flex;
+  justify-content: center;
 }
 
 .site-info {

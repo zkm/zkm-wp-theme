@@ -1,6 +1,6 @@
 <?php
 /**
- * ZKM Custom theme functions.
+ * ZKM WP theme functions.
  *
  * @package zkm-wp-theme
  */
