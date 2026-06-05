@@ -37,7 +37,10 @@ jobs:
             --exclude 'dist' \
             --exclude '.env' \
             --exclude '.env.example' \
-            --exclude 'docker-compose.yml'
+            --exclude '.gitignore' \
+            --exclude 'docker' \
+            --exclude 'docker-compose.yml' \
+            --exclude 'plugins'
 
           ZIP_NAME="${THEME_SLUG}-${VERSION}-${GITHUB_RUN_NUMBER}.zip"
           (cd dist && zip -r "${ZIP_NAME}" "${THEME_SLUG}")

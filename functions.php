@@ -36,7 +36,7 @@ add_action( 'after_setup_theme', 'zkm_custom_setup' );
 function zkm_custom_enqueue_assets() {
     wp_enqueue_style(
         'zkm-wp-theme-fonts',
-        'https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap',
+        'https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Rajdhani:wght@400;500;600;700&display=swap',
         array(),
         null
     );

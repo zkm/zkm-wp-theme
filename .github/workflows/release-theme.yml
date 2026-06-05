@@ -43,7 +43,10 @@ jobs:
             --exclude 'dist' \
             --exclude '.env' \
             --exclude '.env.example' \
-            --exclude 'docker-compose.yml'
+            --exclude '.gitignore' \
+            --exclude 'docker' \
+            --exclude 'docker-compose.yml' \
+            --exclude 'plugins'
 
           (cd dist && zip -r "${THEME_SLUG}-${VERSION}.zip" "${THEME_SLUG}")
 

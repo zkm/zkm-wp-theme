@@ -30,8 +30,10 @@ This is a standalone WordPress theme with no parent theme dependency.
 3. Open local site:
 
 	```text
-	http://localhost:8080
+	http://localhost:8081
 	```
+
+If `8081` is already in use, set `WORDPRESS_PORT` in your `.env` file before starting the stack.
 
 ### Local upload limit (2GB)
 The Docker setup includes a PHP override at `docker/php/uploads.ini` that sets:

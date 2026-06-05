@@ -11,6 +11,7 @@
 /wp-content/plugins/index.php
 /wp-content/themes/index.php
 /wp-includes/
+/plugins/
 /index.php
 !/index.php
 /license.txt
