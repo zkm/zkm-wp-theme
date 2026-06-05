@@ -18,6 +18,7 @@ Text Domain: zkm-wp-theme
   --zkm-bg-soft: #0d1324;
   --zkm-panel: #101a30;
   --zkm-text: #f2f8ff;
+  --zkm-copy: #d5e9ff;
   --zkm-muted: #a7b8d8;
   --zkm-link: #5df2ff;
   --zkm-link-hover: #e8f7ff;
@@ -37,6 +38,7 @@ Text Domain: zkm-wp-theme
     --zkm-bg-soft: #f8fbff;
     --zkm-panel: #ffffff;
     --zkm-text: #132139;
+    --zkm-copy: #2a3f5b;
     --zkm-muted: #53658a;
     --zkm-link: #005fcc;
     --zkm-link-hover: #003e87;
@@ -52,6 +54,7 @@ Text Domain: zkm-wp-theme
   --zkm-bg-soft: #f8fbff;
   --zkm-panel: #ffffff;
   --zkm-text: #132139;
+  --zkm-copy: #2a3f5b;
   --zkm-muted: #53658a;
   --zkm-link: #005fcc;
   --zkm-link-hover: #003e87;
@@ -66,6 +69,7 @@ Text Domain: zkm-wp-theme
   --zkm-bg-soft: #0d1324;
   --zkm-panel: #101a30;
   --zkm-text: #f2f8ff;
+  --zkm-copy: #d5e9ff;
   --zkm-muted: #a7b8d8;
   --zkm-link: #5df2ff;
   --zkm-link-hover: #e8f7ff;
@@ -629,7 +633,7 @@ body.admin-bar.zkm-has-hero-layout .site-header-wrap {
 .entry-summary p {
   max-width: 70ch;
   margin-bottom: 1.2em;
-  color: #d5e9ff;
+  color: var(--zkm-copy);
   line-height: 1.8;
 }
 
@@ -1164,6 +1168,21 @@ body.admin-bar.zkm-has-hero-layout .site-header-wrap {
 :root[data-theme="light"] .gform_wrapper .ginput_left small,
 :root[data-theme="light"] .gform_wrapper .ginput_right small {
   color: #5d6f86;
+}
+
+:root[data-theme="light"] .gform_wrapper .gform_button,
+:root[data-theme="light"] .gform_wrapper input[type="submit"] {
+  border-color: rgba(0, 62, 135, 0.38);
+  background: #005fcc;
+  color: #ffffff;
+}
+
+:root[data-theme="light"] .gform_wrapper .gform_button:hover,
+:root[data-theme="light"] .gform_wrapper .gform_button:focus-visible,
+:root[data-theme="light"] .gform_wrapper input[type="submit"]:hover,
+:root[data-theme="light"] .gform_wrapper input[type="submit"]:focus-visible {
+  background: #004a9f;
+  color: #ffffff;
 }
 
 :root[data-theme="light"] .gform_wrapper .gfield.gfield_error {
