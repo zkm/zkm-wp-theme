@@ -46,6 +46,7 @@ jobs:
             --exclude '.gitignore' \
             --exclude 'docker' \
             --exclude 'docker-compose.yml' \
+            --exclude 'deploy.sh' \
             --exclude 'plugins'
 
           (cd dist && zip -r "${THEME_SLUG}-${VERSION}.zip" "${THEME_SLUG}")
