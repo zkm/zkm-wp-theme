@@ -4,7 +4,7 @@ Theme URI: https://www.zachschneider.com/
 Author: Zach Schneider
 Author URI: https://www.zkm.tw/
 Description: A fully standalone custom theme with polished navigation and dark styling.
-Version: 2.1.7
+Version: 2.1.8
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -1039,8 +1039,8 @@ body.admin-bar.zkm-has-hero-layout .site-header-wrap {
 .fluentform .frm-fluent-form .ff-btn-submit:not(.ff_btn_no_style) {
   appearance: none;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  background: var(--zkm-link);
-  color: #132033;
+  background: linear-gradient(135deg, var(--zkm-link), var(--zkm-neon-violet));
+  color: #0b1226;
   border-radius: 0.55rem;
   padding: 0.58rem 0.95rem;
   font-family: inherit;
@@ -1048,12 +1048,13 @@ body.admin-bar.zkm-has-hero-layout .site-header-wrap {
   font-weight: 700;
   cursor: pointer;
   opacity: 1;
-  transition: background-color 0.2s ease, transform 0.14s ease;
+  box-shadow: 0 0 14px rgba(93, 242, 255, 0.28);
+  transition: filter 0.2s ease, box-shadow 0.2s ease, transform 0.14s ease;
 }
 
 .fluentform .frm-fluent-form .ff-btn-submit:not(.ff_btn_no_style):hover,
 .fluentform .frm-fluent-form .ff-btn-submit:not(.ff_btn_no_style):focus-visible {
-  background: #74b6ff;
+  filter: brightness(1.1);
   opacity: 1;
   transform: translateY(-1px);
 }
@@ -1161,14 +1162,8 @@ body.admin-bar.zkm-has-hero-layout .site-header-wrap {
 
 :root[data-theme="light"] .fluentform .frm-fluent-form .ff-btn-submit:not(.ff_btn_no_style) {
   border-color: rgba(0, 62, 135, 0.38);
-  background: #005fcc;
   color: #ffffff;
-}
-
-:root[data-theme="light"] .fluentform .frm-fluent-form .ff-btn-submit:not(.ff_btn_no_style):hover,
-:root[data-theme="light"] .fluentform .frm-fluent-form .ff-btn-submit:not(.ff_btn_no_style):focus-visible {
-  background: #004a9f;
-  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(0, 95, 204, 0.22);
 }
 
 :root[data-theme="light"] .fluentform .ff-errors-in-stack {
