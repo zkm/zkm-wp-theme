@@ -21,6 +21,8 @@
         <div class="site-branding">
             <?php if ( has_custom_logo() ) : ?>
                 <?php the_custom_logo(); ?>
+            <?php else : ?>
+                <a class="custom-logo-link zkm-logo-mark" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" tabindex="-1" aria-hidden="true"></a>
             <?php endif; ?>
 
             <?php if ( is_front_page() || is_home() ) : ?>

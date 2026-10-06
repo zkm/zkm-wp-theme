@@ -4,9 +4,9 @@ Theme URI: https://www.zachschneider.com/
 Author: Zach Schneider
 Author URI: https://www.zkm.tw/
 Description: A fully standalone custom theme with polished navigation and dark styling.
-Version: 2.0.1
+Version: 2.1.0
 Requires at least: 6.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
 License: GNU General Public License v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -211,6 +211,7 @@ a:focus-visible {
 .site-header-wrap {
   position: relative;
   z-index: 40;
+  isolation: isolate;
   border-bottom: 1px solid rgba(93, 242, 255, 0.32);
   background: linear-gradient(180deg, rgba(4, 10, 22, 0.86), rgba(9, 17, 33, 0.82));
   backdrop-filter: blur(12px);
@@ -223,6 +224,23 @@ a:focus-visible {
   border-bottom: 1px solid rgba(0, 95, 204, 0.22);
   background: linear-gradient(180deg, rgba(247, 251, 255, 0.94), rgba(237, 245, 255, 0.88));
   box-shadow: 0 8px 22px rgba(31, 55, 92, 0.12), 0 0 12px rgba(0, 140, 184, 0.1);
+}
+
+.site-header-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: min(62%, 720px);
+  z-index: -1;
+  background: url("assets/images/solo-jazz.webp") center / cover no-repeat;
+  opacity: 0.16;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 45%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 45%);
+  pointer-events: none;
+}
+
+:root[data-theme="light"] .site-header-wrap::before {
+  opacity: 0.18;
 }
 
 .site-header {
@@ -333,13 +351,54 @@ a:focus-visible {
 .site-branding {
   min-width: 220px;
   display: grid;
-  gap: 0.03rem;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 0.6rem;
+  row-gap: 0.03rem;
 }
 
 .site-branding .custom-logo-link {
   display: inline-flex;
   align-items: center;
+  grid-column: 1;
+  grid-row: 1 / span 2;
 }
+
+.site-title,
+.site-description {
+  grid-column: 2;
+}
+
+.site-branding .zkm-logo-mark {
+  position: relative;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 0.7rem;
+  border: 1px solid rgba(93, 242, 255, 0.6);
+  background:
+    url("assets/images/solo-jazz.webp") 50% 50% / 190% auto no-repeat,
+    linear-gradient(140deg, #0d1a33, #060914);
+  box-shadow: 0 0 0 2px rgba(182, 140, 255, 0.28), 0 0 14px rgba(93, 242, 255, 0.3);
+  text-decoration: none;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.site-branding .zkm-logo-mark:hover {
+  transform: rotate(-4deg);
+  box-shadow: 0 0 0 2px rgba(182, 140, 255, 0.45), 0 0 18px rgba(93, 242, 255, 0.45);
+}
+
+
+:root[data-theme="light"] .site-branding .zkm-logo-mark {
+  border-color: rgba(0, 140, 184, 0.55);
+  background:
+    url("assets/images/solo-jazz.webp") 50% 50% / 190% auto no-repeat,
+    linear-gradient(140deg, #ffffff, #eef3ff);
+  box-shadow: 0 0 0 2px rgba(113, 85, 214, 0.2), 0 4px 10px rgba(31, 55, 92, 0.16);
+}
+
 
 .site-branding .custom-logo {
   width: auto;
@@ -911,296 +970,238 @@ body.admin-bar.zkm-has-hero-layout .site-header-wrap {
   box-shadow: inset 0 0 0 1px rgba(93, 242, 255, 0.2);
 }
 
-.gform_wrapper {
+.fluentform {
   margin-top: 0.5rem;
 }
 
-.gform_wrapper .gform_title {
-  margin: 0 0 1.25rem;
-  color: #ffffff;
-  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
-  line-height: 1.15;
+.fluentform .frm-fluent-form .ff-el-group {
+  margin-bottom: 1.1rem;
 }
 
-.gform_wrapper .gfield_label {
+.fluentform .frm-fluent-form .ff-el-input--label label {
   color: #f0f4fc;
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 0.45rem;
 }
 
-.gform_wrapper .gfield_required {
+.fluentform .frm-fluent-form .ff-el-input--label.ff-el-is-required.asterisk-right label::after,
+.fluentform .frm-fluent-form .ff-el-input--label.ff-el-is-required.asterisk-left label::before {
   color: #ff8181;
 }
 
-.gform_wrapper input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]),
-.gform_wrapper textarea,
-.gform_wrapper select {
+.fluentform .frm-fluent-form .ff-el-form-control {
   width: 100%;
   border: 1px solid rgba(255, 255, 255, 0.22);
   background: rgba(15, 20, 31, 0.82);
   color: #f5f8ff;
   border-radius: 0.55rem;
   padding: 0.7rem 0.78rem;
+  font-family: inherit;
   font-size: 1rem;
   line-height: 1.45;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
-.gform_wrapper input::placeholder,
-.gform_wrapper textarea::placeholder {
+.fluentform .frm-fluent-form .ff-el-form-control::placeholder {
   color: #95a1b7;
 }
 
-.gform_wrapper textarea {
+.fluentform .frm-fluent-form textarea.ff-el-form-control {
   min-height: 180px;
   resize: vertical;
 }
 
-.gform_wrapper input:focus,
-.gform_wrapper textarea:focus,
-.gform_wrapper select:focus {
+.fluentform .frm-fluent-form .ff-el-form-control:focus {
   outline: none;
   border-color: var(--zkm-link);
   box-shadow: 0 0 0 3px rgba(95, 168, 255, 0.2);
   background: rgba(10, 15, 24, 0.92);
+  color: #f5f8ff;
 }
 
-.gform_wrapper .ginput_complex {
-  display: grid;
+.fluentform .frm-fluent-form .ff-t-container {
   gap: 0.7rem;
 }
 
-.gform_wrapper .gfield_description,
-.gform_wrapper .ginput_full small,
-.gform_wrapper .ginput_left small,
-.gform_wrapper .ginput_right small {
+.fluentform .frm-fluent-form .ff-el-help-message {
   color: #a8b2c4;
   font-size: 0.85rem;
 }
 
-.gform_wrapper .gform_footer,
-.gform_wrapper .gform_page_footer {
+.fluentform .frm-fluent-form .ff_submit_btn_wrapper {
   margin-top: 1rem;
-  padding-top: 0;
 }
 
-.gform_wrapper .gform_button,
-.gform_wrapper input[type="submit"] {
+.fluentform .frm-fluent-form .ff-btn-submit:not(.ff_btn_no_style) {
   appearance: none;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: var(--zkm-link);
   color: #132033;
   border-radius: 0.55rem;
   padding: 0.58rem 0.95rem;
+  font-family: inherit;
   font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
+  opacity: 1;
   transition: background-color 0.2s ease, transform 0.14s ease;
 }
 
-.gform_wrapper .gform_button:hover,
-.gform_wrapper .gform_button:focus-visible,
-.gform_wrapper input[type="submit"]:hover,
-.gform_wrapper input[type="submit"]:focus-visible {
+.fluentform .frm-fluent-form .ff-btn-submit:not(.ff_btn_no_style):hover,
+.fluentform .frm-fluent-form .ff-btn-submit:not(.ff_btn_no_style):focus-visible {
   background: #74b6ff;
+  opacity: 1;
   transform: translateY(-1px);
 }
 
-.gform_wrapper .validation_message,
-.gform_wrapper .gform_validation_errors {
-  border-radius: 0.55rem;
-}
-
-.gform_wrapper .gform_validation_errors {
-  border: 1px solid rgba(255, 110, 130, 0.52);
-  background: rgba(94, 28, 42, 0.4);
-  color: #ffe2e8;
-  padding: 1rem 1.1rem !important;
-}
-
-.gform_wrapper .gform_validation_errors h2 {
-  margin: 0;
-  color: #ffeaf0;
-  font-size: 0.96rem;
-  line-height: 1.45;
-}
-
-.gform_wrapper .gform_validation_errors,
-.gform_wrapper .gform_validation_errors * {
-  color: #ffeaf0 !important;
-}
-
-.gform_wrapper .gform_validation_errors ol,
-.gform_wrapper .gform_validation_errors ul {
-  margin: 0.55rem 0 0;
-  padding-left: 1.15rem;
-}
-
-.gform_wrapper .gform_validation_errors li {
-  margin: 0.2rem 0;
-  line-height: 1.45;
-}
-
-.gform_wrapper .gform_validation_errors a {
-  color: #ffffff !important;
-  text-decoration: underline;
-  text-decoration-color: rgba(255, 255, 255, 0.55);
-}
-
-.gform_wrapper .gform_validation_errors a:hover,
-.gform_wrapper .gform_validation_errors a:focus-visible {
-  color: #ffffff !important;
-  text-decoration-color: rgba(255, 255, 255, 0.9);
-}
-
-.gform_wrapper div.validation_error {
-  border: 1px solid rgba(255, 110, 130, 0.58) !important;
-  border-left: 4px solid #ff7f9a !important;
-  background: rgba(84, 22, 36, 0.52) !important;
-  color: #ffeaf0 !important;
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.45;
-  margin: 0 0 1.1rem;
-  padding: 0.85rem 1rem;
-  border-radius: 0.55rem;
-}
-
-.gform_wrapper div.validation_error a {
-  color: #ffffff !important;
-  text-decoration: underline;
-}
-
-.gform_confirmation_wrapper,
-.gform_wrapper .gform_confirmation_message {
-  margin-top: 0.5rem;
-}
-
-.gform_wrapper .gform_confirmation_message {
-  border: 1px solid rgba(90, 189, 140, 0.5);
-  border-left: 4px solid #67d59e;
-  background: rgba(22, 68, 48, 0.35);
-  color: #e9fff3;
-  border-radius: 0.65rem;
-  padding: 0.9rem 1rem;
-  font-weight: 600;
-  line-height: 1.55;
-}
-
-.gform_wrapper .gform_confirmation_message a {
-  color: #ffffff;
-  text-decoration: underline;
-  text-decoration-color: rgba(255, 255, 255, 0.65);
-}
-
-.gform_wrapper .gform_confirmation_message a:hover,
-.gform_wrapper .gform_confirmation_message a:focus-visible {
-  text-decoration-color: rgba(255, 255, 255, 1);
-}
-
-.gform_wrapper img.gform_ajax_spinner {
-  display: none !important;
-}
-
-.gform_wrapper .gform_button[disabled],
-.gform_wrapper input[type="submit"][disabled] {
+.fluentform .frm-fluent-form .ff-btn-submit[disabled] {
   opacity: 0.8;
   cursor: progress;
   transform: none;
 }
 
-.gform_wrapper .gfield.gfield_error {
+.fluentform .ff-errors-in-stack {
+  border: 1px solid rgba(255, 110, 130, 0.52);
+  background: rgba(94, 28, 42, 0.4);
+  color: #ffeaf0;
+  border-radius: 0.55rem;
+  padding: 1rem 1.1rem;
+}
+
+.fluentform .ff-errors-in-stack .error {
+  margin: 0.2rem 0;
+  color: #ffeaf0;
+  line-height: 1.45;
+}
+
+.fluentform .frm-fluent-form .ff-el-group.ff-el-is-error {
   background: rgba(94, 28, 42, 0.28);
   border: 1px solid rgba(255, 110, 130, 0.42);
   border-radius: 0.55rem;
   padding: 0.6rem 0.72rem;
 }
 
-.gform_wrapper .gfield.gfield_error .gfield_label,
-.gform_wrapper .gfield.gfield_error .validation_message {
+.fluentform .frm-fluent-form .ff-el-is-error .ff-el-input--label label,
+.fluentform .frm-fluent-form .ff-el-is-error .text-danger {
   color: #ffd9e1;
 }
 
-.gform_wrapper .gfield.gfield_error input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]),
-.gform_wrapper .gfield.gfield_error textarea,
-.gform_wrapper .gfield.gfield_error select {
+.fluentform .frm-fluent-form .ff-el-is-error .text-danger {
+  font-size: 0.85rem;
+  margin-top: 0.35rem;
+}
+
+.fluentform .frm-fluent-form .ff-el-is-error .ff-el-form-control {
   border-color: rgba(255, 110, 130, 0.72);
   color: #f5f8ff;
   background: rgba(15, 20, 31, 0.9);
 }
 
-:root[data-theme="light"] .gform_wrapper .gform_title {
-  color: #17314f;
+.fluentform .ff-message-success {
+  margin-top: 0.5rem;
+  border: 1px solid rgba(90, 189, 140, 0.5);
+  border-left: 4px solid #67d59e;
+  background: rgba(22, 68, 48, 0.35);
+  color: #e9fff3;
+  border-radius: 0.65rem;
+  box-shadow: none;
+  padding: 0.9rem 1rem;
+  font-weight: 600;
+  line-height: 1.55;
 }
 
-:root[data-theme="light"] .gform_wrapper .gfield_label {
+.fluentform .ff-message-success p {
+  margin: 0;
+}
+
+.fluentform .ff-message-success a {
+  color: #ffffff;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.65);
+}
+
+.fluentform .ff-message-success a:hover,
+.fluentform .ff-message-success a:focus-visible {
+  text-decoration-color: rgba(255, 255, 255, 1);
+}
+
+:root[data-theme="light"] .fluentform .frm-fluent-form .ff-el-input--label label {
   color: #2a3f5b;
 }
 
-:root[data-theme="light"] .gform_wrapper .gfield_required {
+:root[data-theme="light"] .fluentform .frm-fluent-form .ff-el-input--label.ff-el-is-required.asterisk-right label::after,
+:root[data-theme="light"] .fluentform .frm-fluent-form .ff-el-input--label.ff-el-is-required.asterisk-left label::before {
   color: #c0354f;
 }
 
-:root[data-theme="light"] .gform_wrapper input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]),
-:root[data-theme="light"] .gform_wrapper textarea,
-:root[data-theme="light"] .gform_wrapper select {
+:root[data-theme="light"] .fluentform .frm-fluent-form .ff-el-form-control {
   border: 1px solid rgba(19, 53, 91, 0.24);
   background: rgba(255, 255, 255, 0.9);
   color: #1c2f46;
 }
 
-:root[data-theme="light"] .gform_wrapper input::placeholder,
-:root[data-theme="light"] .gform_wrapper textarea::placeholder {
+:root[data-theme="light"] .fluentform .frm-fluent-form .ff-el-form-control::placeholder {
   color: #6f8196;
 }
 
-:root[data-theme="light"] .gform_wrapper input:focus,
-:root[data-theme="light"] .gform_wrapper textarea:focus,
-:root[data-theme="light"] .gform_wrapper select:focus {
+:root[data-theme="light"] .fluentform .frm-fluent-form .ff-el-form-control:focus {
   border-color: rgba(0, 95, 204, 0.65);
   box-shadow: 0 0 0 3px rgba(0, 95, 204, 0.14);
   background: #ffffff;
+  color: #1c2f46;
 }
 
-:root[data-theme="light"] .gform_wrapper .gfield_description,
-:root[data-theme="light"] .gform_wrapper .ginput_full small,
-:root[data-theme="light"] .gform_wrapper .ginput_left small,
-:root[data-theme="light"] .gform_wrapper .ginput_right small {
+:root[data-theme="light"] .fluentform .frm-fluent-form .ff-el-help-message {
   color: #5d6f86;
 }
 
-:root[data-theme="light"] .gform_wrapper .gform_button,
-:root[data-theme="light"] .gform_wrapper input[type="submit"] {
+:root[data-theme="light"] .fluentform .frm-fluent-form .ff-btn-submit:not(.ff_btn_no_style) {
   border-color: rgba(0, 62, 135, 0.38);
   background: #005fcc;
   color: #ffffff;
 }
 
-:root[data-theme="light"] .gform_wrapper .gform_button:hover,
-:root[data-theme="light"] .gform_wrapper .gform_button:focus-visible,
-:root[data-theme="light"] .gform_wrapper input[type="submit"]:hover,
-:root[data-theme="light"] .gform_wrapper input[type="submit"]:focus-visible {
+:root[data-theme="light"] .fluentform .frm-fluent-form .ff-btn-submit:not(.ff_btn_no_style):hover,
+:root[data-theme="light"] .fluentform .frm-fluent-form .ff-btn-submit:not(.ff_btn_no_style):focus-visible {
   background: #004a9f;
   color: #ffffff;
 }
 
-:root[data-theme="light"] .gform_wrapper .gfield.gfield_error {
+:root[data-theme="light"] .fluentform .ff-errors-in-stack {
+  border-color: rgba(201, 62, 95, 0.4);
+  background: rgba(255, 239, 243, 0.9);
+}
+
+:root[data-theme="light"] .fluentform .ff-errors-in-stack .error {
+  color: #7f2035;
+}
+
+:root[data-theme="light"] .fluentform .frm-fluent-form .ff-el-group.ff-el-is-error {
   background: rgba(255, 239, 243, 0.9);
   border-color: rgba(201, 62, 95, 0.4);
 }
 
-:root[data-theme="light"] .gform_wrapper .gfield.gfield_error .gfield_label,
-:root[data-theme="light"] .gform_wrapper .gfield.gfield_error .validation_message {
+:root[data-theme="light"] .fluentform .frm-fluent-form .ff-el-is-error .ff-el-input--label label,
+:root[data-theme="light"] .fluentform .frm-fluent-form .ff-el-is-error .text-danger {
   color: #7f2035;
 }
 
-:root[data-theme="light"] .gform_wrapper .gfield.gfield_error input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]),
-:root[data-theme="light"] .gform_wrapper .gfield.gfield_error textarea,
-:root[data-theme="light"] .gform_wrapper .gfield.gfield_error select {
+:root[data-theme="light"] .fluentform .frm-fluent-form .ff-el-is-error .ff-el-form-control {
   border-color: rgba(201, 62, 95, 0.65);
   color: #2f1d24;
   background: rgba(255, 255, 255, 0.96);
+}
+
+:root[data-theme="light"] .fluentform .ff-message-success {
+  border-color: rgba(31, 138, 84, 0.4);
+  border-left-color: #1f8a54;
+  background: rgba(232, 248, 239, 0.95);
+  color: #164a30;
+}
+
+:root[data-theme="light"] .fluentform .ff-message-success a {
+  color: #0f5c37;
 }
 
 .site-footer-wrap {
@@ -1523,6 +1524,12 @@ body.zkm-animate.zkm-ready .social-navigation .menu-item {
     max-height: 22px;
   }
 
+  .site-branding .zkm-logo-mark {
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 0.55rem;
+  }
+
   .site-title {
     font-size: clamp(0.82rem, 3.6vw, 0.96rem);
   }
@@ -1638,28 +1645,17 @@ body.zkm-animate.zkm-ready .social-navigation .menu-item {
     font-size: 0.95rem;
   }
 
-  .gform_wrapper div.validation_error,
-  .gform_wrapper .gform_validation_errors {
-    padding: 1.1rem 1.15rem !important;
+  .fluentform .ff-errors-in-stack {
+    padding: 1.1rem 1.15rem;
     font-size: 0.88rem;
     line-height: 1.45;
   }
 
-  .gform_wrapper .gform_validation_errors h2 {
-    font-size: 0.88rem;
-    line-height: 1.4;
-  }
-
-  .gform_wrapper .gform_validation_errors ol,
-  .gform_wrapper .gform_validation_errors ul {
-    padding-left: 1rem;
-  }
-
-  .gform_wrapper .gfield.gfield_error {
+  .fluentform .frm-fluent-form .ff-el-group.ff-el-is-error {
     padding: 0.5rem 0.6rem;
   }
 
-  .gform_wrapper .gfield.gfield_error .validation_message {
+  .fluentform .frm-fluent-form .ff-el-is-error .text-danger {
     font-size: 0.82rem;
     line-height: 1.4;
   }
