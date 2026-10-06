@@ -777,6 +777,18 @@ body.admin-bar.zkm-has-hero-layout .site-header-wrap {
   backface-visibility: hidden;
 }
 
+/* Show content for one color mode only: add zkm-dark-only or zkm-light-only
+   as an "Additional CSS class" on a block. */
+:root[data-theme="light"] .zkm-dark-only,
+:root:not([data-theme="light"]) .zkm-light-only {
+  display: none !important;
+}
+
+/* When a dark-only block leads the content, its light twin takes the first-child spacing. */
+.entry-content > .zkm-dark-only:first-child + .zkm-light-only {
+  margin-top: 0;
+}
+
 .is-about-page .entry-content img {
   border-radius: 44% 56% 58% 42% / 49% 42% 58% 51%;
   max-width: 360px;
