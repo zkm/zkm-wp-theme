@@ -146,3 +146,114 @@ function zkm_custom_fediverse_meta() {
     echo '<meta name="fediverse:creator" content="@zachschneider@mastodon.social">' . "\n";
 }
 add_action( 'wp_head', 'zkm_custom_fediverse_meta', 1 );
+
+/**
+ * Build a plain-text description for the current view.
+ *
+ * @return string
+ */
+function zkm_custom_meta_description() {
+    $description = '';
+
+    if ( is_singular() ) {
+        $post        = get_queried_object();
+        $description = has_excerpt( $post ) ? $post->post_excerpt : strip_shortcodes( $post->post_content );
+    } elseif ( is_category() || is_tag() || is_tax() ) {
+        $description = term_description();
+    } elseif ( is_author() ) {
+        $description = get_the_author_meta( 'description', get_queried_object_id() );
+    }
+
+    $description = wp_strip_all_tags( excerpt_remove_blocks( (string) $description ), true );
+
+    if ( '' === $description ) {
+        $description = get_bloginfo( 'description', 'display' );
+    }
+
+    return wp_trim_words( $description, 30, '…' );
+}
+
+/**
+ * Output description, Open Graph and Twitter card tags.
+ *
+ * Skipped when an SEO plugin that writes its own social tags is active.
+ *
+ * @return void
+ */
+function zkm_custom_social_meta() {
+    if ( is_404() || defined( 'WPSEO_VERSION' ) || defined( 'AIOSEO_VERSION' ) || defined( 'RANK_MATH_VERSION' ) || defined( 'SEOPRESS_VERSION' ) || class_exists( 'Jetpack_Open_Graph_Tags' ) ) {
+        return;
+    }
+
+    $site_name   = get_bloginfo( 'name', 'display' );
+    $description = zkm_custom_meta_description();
+    $is_article  = is_singular( 'post' );
+
+    if ( is_front_page() ) {
+        $title = $site_name;
+        $url   = home_url( '/' );
+    } elseif ( is_singular() ) {
+        $title = single_post_title( '', false );
+        $url   = wp_get_canonical_url();
+    } else {
+        $title = wp_get_document_title();
+        $url   = is_home() && get_option( 'page_for_posts' ) ? get_permalink( get_option( 'page_for_posts' ) ) : home_url( user_trailingslashit( $GLOBALS['wp']->request ) );
+    }
+
+    $image = array(
+        'url'    => get_theme_file_uri( 'assets/images/social-card.jpg' ),
+        'width'  => 1200,
+        'height' => 630,
+        'alt'    => sprintf( '%s – %s', $site_name, get_bloginfo( 'description', 'display' ) ),
+    );
+
+    if ( is_singular() && ! is_front_page() && has_post_thumbnail() ) {
+        $thumbnail_id = get_post_thumbnail_id();
+        $source       = wp_get_attachment_image_src( $thumbnail_id, 'large' );
+
+        if ( $source ) {
+            $alt   = get_post_meta( $thumbnail_id, '_wp_attachment_image_alt', true );
+            $image = array(
+                'url'    => $source[0],
+                'width'  => $source[1],
+                'height' => $source[2],
+                'alt'    => $alt ? $alt : $title,
+            );
+        }
+    }
+
+    $tags = array(
+        array( 'name', 'description', $description ),
+        array( 'property', 'og:type', $is_article ? 'article' : 'website' ),
+        array( 'property', 'og:site_name', $site_name ),
+        array( 'property', 'og:locale', get_locale() ),
+        array( 'property', 'og:title', $title ),
+        array( 'property', 'og:description', $description ),
+        array( 'property', 'og:url', $url ),
+        array( 'property', 'og:image', $image['url'] ),
+        array( 'property', 'og:image:width', $image['width'] ),
+        array( 'property', 'og:image:height', $image['height'] ),
+        array( 'property', 'og:image:alt', $image['alt'] ),
+        array( 'name', 'twitter:card', 'summary_large_image' ),
+        array( 'name', 'twitter:site', '@zkm' ),
+        array( 'name', 'twitter:creator', '@zkm' ),
+        array( 'name', 'twitter:title', $title ),
+        array( 'name', 'twitter:description', $description ),
+        array( 'name', 'twitter:image', $image['url'] ),
+        array( 'name', 'twitter:image:alt', $image['alt'] ),
+    );
+
+    if ( $is_article ) {
+        $tags[] = array( 'property', 'article:published_time', get_the_date( DATE_W3C ) );
+        $tags[] = array( 'property', 'article:modified_time', get_the_modified_date( DATE_W3C ) );
+    }
+
+    foreach ( $tags as $tag ) {
+        if ( '' === (string) $tag[2] ) {
+            continue;
+        }
+
+        printf( '<meta %s="%s" content="%s">' . "\n", $tag[0], esc_attr( $tag[1] ), esc_attr( html_entity_decode( (string) $tag[2], ENT_QUOTES, 'UTF-8' ) ) );
+    }
+}
+add_action( 'wp_head', 'zkm_custom_social_meta', 5 );
