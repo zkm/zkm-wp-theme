@@ -4,7 +4,7 @@ Theme URI: https://www.zachschneider.com/
 Author: Zach Schneider
 Author URI: https://www.zkm.tw/
 Description: A fully standalone custom theme with polished navigation and dark styling.
-Version: 2.1.3
+Version: 2.1.4
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -30,6 +30,7 @@ Text Domain: zkm-wp-theme
   --zkm-font-body: "Rajdhani", "Segoe UI", sans-serif;
   --zkm-font-heading: "Orbitron", "Segoe UI", sans-serif;
   --zkm-max: 1100px;
+  --zkm-content: 860px;
 }
 
 @media (prefers-color-scheme: light) {
@@ -612,7 +613,7 @@ body.admin-bar.zkm-has-hero-layout .site-header-wrap {
 }
 
 .content-area {
-  max-width: 70ch;
+  max-width: var(--zkm-content);
 }
 
 .content-area .post,
@@ -690,7 +691,7 @@ body.admin-bar.zkm-has-hero-layout .site-header-wrap {
 
 .entry-content p,
 .entry-summary p {
-  max-width: 70ch;
+  max-width: none;
   margin-bottom: 1.2em;
   color: var(--zkm-copy);
   line-height: 1.8;
