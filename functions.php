@@ -138,6 +138,19 @@ function zkm_custom_add_social_menu_icons( $title, $item, $args, $depth ) {
 add_filter( 'nav_menu_item_title', 'zkm_custom_add_social_menu_icons', 10, 4 );
 
 /**
+ * Set the color mode before first paint so styles never mix light and dark.
+ *
+ * Uses the saved toggle choice, falling back to the system preference.
+ * theme.js keeps it in sync afterwards.
+ *
+ * @return void
+ */
+function zkm_custom_color_mode_script() {
+    echo "<script>(function(){var t;try{t=localStorage.getItem('zkm-color-mode')}catch(e){}if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-theme',t)})();</script>\n";
+}
+add_action( 'wp_head', 'zkm_custom_color_mode_script', 0 );
+
+/**
  * Add fediverse creator tag.
  *
  * @return void
