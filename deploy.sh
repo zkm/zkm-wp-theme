@@ -20,6 +20,15 @@ SLUG="zkm-wp-theme"
 WP_PATH="/var/www/html"
 
 CHECK_ONLY=0
+
+if [[ -t 1 ]]; then
+    BOLD=$'\e[1m' GREEN=$'\e[32m' RED=$'\e[31m' RESET=$'\e[0m'
+else
+    BOLD='' GREEN='' RED='' RESET=''
+fi
+step() { printf '\n%s%s%s\n' "$BOLD" "$*" "$RESET"; }
+fail() { printf '%s❌ %s%s\n' "$RED" "$*" "$RESET" >&2; exit 1; }
+
 if [[ "${1:-}" == "--check" ]]; then
     CHECK_ONLY=1
     shift
@@ -29,19 +38,17 @@ cd "$(dirname "$0")"
 VERSION="${1:-$(sed -n 's/^Version: //p' style.css)}"
 VERSION="${VERSION#v}"
 if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    echo "Invalid version: '$VERSION'" >&2
-    exit 1
+    fail "Invalid version: '$VERSION'"
 fi
 ZIP_URL="https://github.com/$REPO/releases/download/v$VERSION/$SLUG-$VERSION.zip"
 STAGE_DIR="deploy/$SLUG-$VERSION"
 
-echo "==> Checking release v$VERSION"
-if ! curl -fsSIL -o /dev/null "$ZIP_URL"; then
-    echo "No release asset at $ZIP_URL. Tag and push v$VERSION first." >&2
-    exit 1
+step "🔎 Checking release v$VERSION"
+if ! curl -fsIL -o /dev/null "$ZIP_URL"; then
+    fail "No release asset at $ZIP_URL. Tag and push v$VERSION first."
 fi
 
-echo "==> Staging on $HOST:~/$STAGE_DIR"
+step "📦 Staging on $HOST:~/$STAGE_DIR"
 ssh -o BatchMode=yes "$HOST" bash -s -- "$VERSION" "$ZIP_URL" "$SLUG" "$WP_PATH" "$STAGE_DIR" <<'REMOTE'
 set -euo pipefail
 VERSION=$1 ZIP_URL=$2 SLUG=$3 WP_PATH=$4 STAGE_DIR=$5
@@ -55,7 +62,7 @@ unzip -q theme.zip
 
 STAGED=$(sed -n 's/^Version: //p' "$SLUG/style.css")
 if [ "$STAGED" != "$VERSION" ]; then
-    echo "Staged style.css says '$STAGED', expected '$VERSION'" >&2
+    echo "❌ Staged style.css says '$STAGED', expected '$VERSION'" >&2
     exit 1
 fi
 for f in "$SLUG"/*.php; do
@@ -63,7 +70,7 @@ for f in "$SLUG"/*.php; do
 done
 
 LIVE=$(sed -n 's/^Version: //p' "$WP_PATH/wp-content/themes/$SLUG/style.css")
-echo "live: ${LIVE:-unknown}  staged: $STAGED"
+echo "   🌐 live ${LIVE:-unknown} → 🆕 staged $STAGED"
 
 cat > install.sh <<EOF
 set -euo pipefail
@@ -71,7 +78,7 @@ T="$WP_PATH/wp-content/themes/$SLUG"
 B="\$HOME/backups/$SLUG-${LIVE:-unknown}-\$(date +%Y%m%d-%H%M%S)"
 mkdir -p "\$HOME/backups"
 sudo cp -a "\$T" "\$B"
-echo "backup: \$B"
+echo "💾 backup: \$B"
 sudo rsync -a --delete "$D/$SLUG/" "\$T/"
 sudo chown -R www-data:www-data "\$T"
 cd "$WP_PATH"
@@ -81,40 +88,39 @@ EOF
 REMOTE
 
 if (( CHECK_ONLY )); then
-    echo "==> Check passed. Run ./deploy.sh $VERSION to install."
+    printf '\n%s✅ Check passed.%s Run ./deploy.sh %s to install.\n' "$GREEN" "$RESET" "$VERSION"
     exit 0
 fi
 
-echo "==> Installing (sudo password required)"
+step "🔐 Installing (sudo password required)"
 ssh -t "$HOST" "bash ~/$STAGE_DIR/install.sh"
 
-echo "==> Purging Cloudflare cache"
-ssh -o BatchMode=yes "$HOST" "cd $WP_PATH && wp eval-file - 2>/dev/null" <<'PHP' || echo "Cloudflare purge failed; purge it from Settings → Cloudflare." >&2
+step "🧹 Purging Cloudflare cache"
+ssh -o BatchMode=yes "$HOST" "cd $WP_PATH && wp eval-file - 2>/dev/null" <<'PHP' || echo "⚠️  Cloudflare purge failed; purge it from Settings → Cloudflare." >&2
 <?php
 if ( ! class_exists( '\CF\WordPress\Hooks' ) ) {
-    echo "Cloudflare plugin not active, skipped\n";
+    echo "⏭️  Cloudflare plugin not active, skipped\n";
     return;
 }
 $hooks = new \CF\WordPress\Hooks();
 $purge = function () {
     $domains = $this->integrationAPI->getDomainList();
     if ( ! $domains ) {
-        return 'no Cloudflare domain configured';
+        return '⚠️  no Cloudflare domain configured';
     }
     $zone = $this->api->getZoneTag( $domains[0] );
     if ( ! $zone ) {
-        return 'no Cloudflare zone for ' . $domains[0];
+        return '⚠️  no Cloudflare zone for ' . $domains[0];
     }
-    return $domains[0] . ': ' . ( $this->api->zonePurgeCache( $zone ) ? 'purge succeeded' : 'purge failed' );
+    return $this->api->zonePurgeCache( $zone ) ? '✨ ' . $domains[0] . ': purge succeeded' : '⚠️  ' . $domains[0] . ': purge failed';
 };
 echo Closure::bind( $purge, $hooks, get_class( $hooks ) )(), "\n";
 PHP
 
-echo "==> Verifying $SITE_URL"
+step "🔍 Verifying $SITE_URL"
 LIVE_VERSION=$(curl -fsS "$SITE_URL/" | grep -oE 'style\.css\?ver=[0-9.]+' | head -n 1 | sed 's/.*ver=//' || true)
 if [[ "$LIVE_VERSION" == "$VERSION" ]]; then
-    echo "Deployed $VERSION."
+    printf '\n%s🚀 Deployed %s in %ss. 🎉%s\n' "$GREEN" "$VERSION" "$SECONDS" "$RESET"
 else
-    echo "Live site reports '${LIVE_VERSION:-nothing}', expected $VERSION." >&2
-    exit 1
+    fail "Live site reports '${LIVE_VERSION:-nothing}', expected $VERSION."
 fi
