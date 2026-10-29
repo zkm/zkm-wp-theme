@@ -2,6 +2,12 @@
 
 [![Package WordPress Theme](https://github.com/zkm/zkm-wp-theme/actions/workflows/package-theme.yml/badge.svg)](https://github.com/zkm/zkm-wp-theme/actions/workflows/package-theme.yml)
 [![Release WordPress Theme](https://github.com/zkm/zkm-wp-theme/actions/workflows/release-theme.yml/badge.svg)](https://github.com/zkm/zkm-wp-theme/actions/workflows/release-theme.yml)
+[![Latest release](https://img.shields.io/github/v/release/zkm/zkm-wp-theme)](https://github.com/zkm/zkm-wp-theme/releases/latest)
+[![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-blue)](LICENSE)
+
+![WordPress 6.0+](https://img.shields.io/badge/WordPress-6.0%2B-21759B?logo=wordpress&logoColor=white)
+![PHP 7.4+](https://img.shields.io/badge/PHP-7.4%2B-777BB4?logo=php&logoColor=white)
+![Docker dev setup](https://img.shields.io/badge/Docker-dev%20setup-2496ED?logo=docker&logoColor=white)
 
 This is a standalone WordPress theme with no parent theme dependency.
 
